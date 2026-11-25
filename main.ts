@@ -19,11 +19,13 @@ const LINE =
 
 // Gate guard: the competition accepts a single line of 1–200 chars,
 // UTF-8, not whitespace-only. Refuse anything outside that range
-// instead of writing a bad entry.
+// instead of writing a bad entry — the grader rejects the whole
+// entry on a malformed file. The single-line guard also rejects
+// carriage returns, so a stray "\r" cannot smuggle in a second line.
 if (LINE.length < 1 || LINE.length > 200 || LINE.trim().length === 0) {
   throw new Error(`Entry line must be 1-200 non-whitespace chars, got ${LINE.length}`);
 }
-if (LINE.includes("\n")) {
+if (LINE.includes("\n") || LINE.includes("\r")) {
   throw new Error("Entry line must be a single line");
 }
 
